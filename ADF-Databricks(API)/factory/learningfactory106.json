@@ -1,0 +1,9 @@
+{
+	"name": "learningfactory106",
+	"location": "uksouth",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "f2e90617-0825-40a8-975a-1461b0ae1d9f",
+		"tenantId": "02ec14df-7379-463d-8db8-77c89c29f096"
+	}
+}

@@ -1,0 +1,13 @@
+{
+	"name": "Rest_auto_models",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "API_autos_medallion",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "RestResource",
+		"schema": []
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}
