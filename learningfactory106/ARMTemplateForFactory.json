@@ -1,0 +1,377 @@
+{
+	"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"type": "string",
+			"metadata": "Data Factory name",
+			"defaultValue": "learningfactory106"
+		},
+		"API_autos_medallion_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'API_autos_medallion'"
+		},
+		"dataengineering106_accountKey": {
+			"type": "secureString",
+			"metadata": "Secure string for 'accountKey' of 'dataengineering106'"
+		},
+		"API_autos_medallion_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://car-api2.p.rapidapi.com/api/models"
+		},
+		"API_autos_medallion_properties_typeProperties_userName": {
+			"type": "string",
+			"defaultValue": "sqladminuser"
+		},
+		"dataengineering106_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://dataengineering106.dfs.core.windows.net/"
+		},
+		"project_linkup_properties_typeProperties_existingClusterId": {
+			"type": "string",
+			"defaultValue": "0426-090312-4yuz35dr"
+		}
+	},
+	"variables": {
+		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+	},
+	"resources": [
+		{
+			"name": "[concat(parameters('factoryName'), '/API_project_1')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "ForEach1",
+						"type": "ForEach",
+						"dependsOn": [],
+						"userProperties": [],
+						"typeProperties": {
+							"items": {
+								"value": "@variables('years')",
+								"type": "Expression"
+							},
+							"isSequential": true,
+							"activities": [
+								{
+									"name": "API_Landing_zone",
+									"type": "DatabricksNotebook",
+									"dependsOn": [],
+									"policy": {
+										"timeout": "0.12:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"notebookPath": "/Users/oluwadamilare.williams@outlook.com/API-medallion Project/API to Landing zone",
+										"baseParameters": {
+											"section": "mileages",
+											"year": {
+												"value": "@string(item())",
+												"type": "Expression"
+											},
+											"filename": {
+												"value": "@concat('mileages_', string(item()))",
+												"type": "Expression"
+											}
+										}
+									},
+									"linkedServiceName": {
+										"referenceName": "API_car_project",
+										"type": "LinkedServiceReference"
+									}
+								}
+							]
+						}
+					}
+				],
+				"concurrency": 1,
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"variables": {
+					"years": {
+						"type": "Array",
+						"defaultValue": [
+							2015,
+							2016,
+							2017,
+							2018,
+							2019
+						]
+					},
+					"debug years": {
+						"type": "Array"
+					}
+				},
+				"annotations": [],
+				"lastPublishTime": "2025-05-13T23:23:12Z"
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/API_car_project')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Json1')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "dataengineering106",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "Json",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"folderPath": "landing_zone",
+						"fileSystem": "api-medallion-project"
+					}
+				},
+				"schema": {
+					"type": "object",
+					"properties": {
+						"collection": {
+							"type": "object",
+							"properties": {
+								"url": {
+									"type": "string"
+								},
+								"count": {
+									"type": "integer"
+								},
+								"pages": {
+									"type": "integer"
+								},
+								"total": {
+									"type": "integer"
+								},
+								"next": {
+									"type": "string"
+								},
+								"prev": {
+									"type": "string"
+								},
+								"first": {
+									"type": "string"
+								},
+								"last": {
+									"type": "string"
+								}
+							}
+						},
+						"data": {
+							"type": "array",
+							"items": {
+								"type": "object",
+								"properties": {
+									"id": {
+										"type": "integer"
+									},
+									"make_model_trim_id": {
+										"type": "integer"
+									},
+									"engine_type": {
+										"type": "string"
+									},
+									"fuel_type": {
+										"type": "string"
+									},
+									"cylinders": {
+										"type": "string"
+									},
+									"size": {
+										"type": "string"
+									},
+									"horsepower_hp": {
+										"type": "integer"
+									},
+									"horsepower_rpm": {
+										"type": "integer"
+									},
+									"torque_ft_lbs": {
+										"type": "integer"
+									},
+									"torque_rpm": {
+										"type": "integer"
+									},
+									"valves": {
+										"type": "integer"
+									},
+									"valve_timing": {
+										"type": "string"
+									},
+									"cam_type": {
+										"type": "string"
+									},
+									"drive_type": {
+										"type": "string"
+									},
+									"transmission": {
+										"type": "string"
+									},
+									"make_model_trim": {
+										"type": "object",
+										"properties": {
+											"id": {
+												"type": "integer"
+											},
+											"make_model_id": {
+												"type": "integer"
+											},
+											"year": {
+												"type": "integer"
+											},
+											"name": {
+												"type": "string"
+											},
+											"description": {
+												"type": "string"
+											},
+											"msrp": {
+												"type": "integer"
+											},
+											"invoice": {
+												"type": "integer"
+											},
+											"created": {
+												"type": "string"
+											},
+											"modified": {
+												"type": "string"
+											},
+											"make_model": {
+												"type": "object",
+												"properties": {
+													"id": {
+														"type": "integer"
+													},
+													"make_id": {
+														"type": "integer"
+													},
+													"name": {
+														"type": "string"
+													},
+													"make": {
+														"type": "object",
+														"properties": {
+															"id": {
+																"type": "integer"
+															},
+															"name": {
+																"type": "string"
+															}
+														}
+													}
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/dataengineering106')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Rest_auto_models')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "API_autos_medallion",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "RestResource",
+				"typeProperties": {},
+				"schema": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/API_autos_medallion')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/API_autos_medallion')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "RestService",
+				"typeProperties": {
+					"url": "[parameters('API_autos_medallion_properties_typeProperties_url')]",
+					"enableServerCertificateValidation": true,
+					"authenticationType": "Basic",
+					"userName": "[parameters('API_autos_medallion_properties_typeProperties_userName')]",
+					"password": {
+						"type": "SecureString",
+						"value": "[parameters('API_autos_medallion_password')]"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/API_car_project')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureDatabricks",
+				"typeProperties": {
+					"domain": "https://adb-2094138210798001.1.azuredatabricks.net",
+					"authentication": "MSI",
+					"workspaceResourceId": "/subscriptions/1abb6b09-3b6f-4ec0-affa-c232614580ce/resourceGroups/First_group/providers/Microsoft.Databricks/workspaces/First_budget",
+					"newClusterNodeType": "Standard_DS3_v2",
+					"newClusterNumOfWorker": "1",
+					"newClusterVersion": "15.4.x-scala2.12",
+					"clusterOption": "Fixed",
+					"newClusterInitScripts": []
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/dataengineering106')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureBlobFS",
+				"typeProperties": {
+					"url": "[parameters('dataengineering106_properties_typeProperties_url')]",
+					"accountKey": {
+						"type": "SecureString",
+						"value": "[parameters('dataengineering106_accountKey')]"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/project_linkup')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureDatabricks",
+				"typeProperties": {
+					"domain": "https://adb-2094138210798001.1.azuredatabricks.net",
+					"authentication": "MSI",
+					"workspaceResourceId": "/subscriptions/1abb6b09-3b6f-4ec0-affa-c232614580ce/resourceGroups/First_group/providers/Microsoft.Databricks/workspaces/First_budget",
+					"existingClusterId": "[parameters('project_linkup_properties_typeProperties_existingClusterId')]"
+				}
+			},
+			"dependsOn": []
+		}
+	]
+}
