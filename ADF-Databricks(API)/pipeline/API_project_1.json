@@ -5,8 +5,6 @@
 			{
 				"name": "ForEach1",
 				"type": "ForEach",
-				"state": "Inactive",
-				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [],
 				"userProperties": [],
 				"typeProperties": {
@@ -17,7 +15,7 @@
 					"isSequential": true,
 					"activities": [
 						{
-							"name": "API_to_JSON",
+							"name": "API_Landing_zone",
 							"type": "DatabricksNotebook",
 							"dependsOn": [],
 							"policy": {
@@ -31,13 +29,10 @@
 							"typeProperties": {
 								"notebookPath": "/Users/oluwadamilare.williams@outlook.com/API-medallion Project/API to Landing zone",
 								"baseParameters": {
-									"section": "models",
-									"year": {
-										"value": "@string(item())",
-										"type": "Expression"
-									},
+									"section": "mileages",
+									"year": "@string(item())",
 									"filename": {
-										"value": "@concat('models_', string(item()))\n",
+										"value": "@concat('mileages_', string(item()))",
 										"type": "Expression"
 									}
 								}
@@ -49,63 +44,19 @@
 						}
 					]
 				}
-			},
-			{
-				"name": "API_years",
-				"type": "SetVariable",
-				"dependsOn": [],
-				"policy": {
-					"secureOutput": false,
-					"secureInput": false
-				},
-				"userProperties": [],
-				"typeProperties": {
-					"variableName": "years",
-					"value": {
-						"value": "@range(pipeline().parameters.startYear, pipeline().parameters.endYear)\n",
-						"type": "Expression"
-					}
-				}
-			},
-			{
-				"name": "Set variable1",
-				"type": "SetVariable",
-				"dependsOn": [
-					{
-						"activity": "API_years",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
-				"policy": {
-					"secureOutput": false,
-					"secureInput": false
-				},
-				"userProperties": [],
-				"typeProperties": {
-					"variableName": "debug years",
-					"value": {
-						"value": "@pipeline().parameters.endYear",
-						"type": "Expression"
-					}
-				}
 			}
 		],
 		"concurrency": 1,
-		"parameters": {
-			"startYear": {
-				"type": "int",
-				"defaultValue": 2015
-			},
-			"endYear": {
-				"type": "int",
-				"defaultValue": 2019
-			}
-		},
 		"variables": {
 			"years": {
-				"type": "Array"
+				"type": "Array",
+				"defaultValue": [
+					2015,
+					2016,
+					2017,
+					2018,
+					2019
+				]
 			},
 			"debug years": {
 				"type": "Array"
