@@ -65,7 +65,10 @@
 							},
 							"userProperties": [],
 							"typeProperties": {
-								"notebookPath": "/Users/oluwadamilare.williams@outlook.com/API-medallion Project/Bronze_Mileages"
+								"notebookPath": "/Users/oluwadamilare.williams@outlook.com/API-medallion Project/Bronze_Mileages",
+								"baseParameters": {
+									"year": "@string(item())"
+								}
 							},
 							"linkedServiceName": {
 								"referenceName": "API_car_project",
