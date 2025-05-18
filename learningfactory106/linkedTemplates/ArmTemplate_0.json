@@ -159,13 +159,13 @@
 									}
 								},
 								{
-									"name": "Landing_to_Bronze",
+									"name": "Bronze_Mileages",
 									"type": "DatabricksNotebook",
 									"dependsOn": [
 										{
 											"activity": "API_Landing_zone",
 											"dependencyConditions": [
-												"Completed"
+												"Succeeded"
 											]
 										}
 									],
@@ -178,7 +178,7 @@
 									},
 									"userProperties": [],
 									"typeProperties": {
-										"notebookPath": "/Users/oluwadamilare.williams@outlook.com/API-medallion Project/Landing Zone to Bronze"
+										"notebookPath": "/Users/oluwadamilare.williams@outlook.com/API-medallion Project/Bronze_Mileages"
 									},
 									"linkedServiceName": {
 										"referenceName": "API_car_project",
@@ -201,7 +201,7 @@
 							"isSequential": true,
 							"activities": [
 								{
-									"name": "API_Landing_zone_copy1",
+									"name": "API_Landing_zone_",
 									"type": "DatabricksNotebook",
 									"dependsOn": [],
 									"policy": {
@@ -232,11 +232,11 @@
 									}
 								},
 								{
-									"name": "Landing_to_Bronze_copy1",
+									"name": "Bronze_Models",
 									"type": "DatabricksNotebook",
 									"dependsOn": [
 										{
-											"activity": "API_Landing_zone_copy1",
+											"activity": "API_Landing_zone_",
 											"dependencyConditions": [
 												"Completed"
 											]
@@ -251,7 +251,7 @@
 									},
 									"userProperties": [],
 									"typeProperties": {
-										"notebookPath": "/Users/oluwadamilare.williams@outlook.com/API-medallion Project/Landing Zone to Bronze"
+										"notebookPath": "/Users/oluwadamilare.williams@outlook.com/API-medallion Project/Bronze_Models"
 									},
 									"linkedServiceName": {
 										"referenceName": "API_car_project",
