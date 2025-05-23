@@ -3,14 +3,20 @@
 	"properties": {
 		"annotations": [],
 		"runtimeState": "Started",
-		"pipelines": [],
+		"pipelines": [
+			{
+				"pipelineReference": {
+					"referenceName": "API_project_1",
+					"type": "PipelineReference"
+				}
+			}
+		],
 		"type": "ScheduleTrigger",
 		"typeProperties": {
 			"recurrence": {
 				"frequency": "Hour",
 				"interval": 9,
 				"startTime": "2025-05-19T22:00:00",
-				"endTime": "2025-05-20T10:00:00",
 				"timeZone": "W. Central Africa Standard Time"
 			}
 		}
