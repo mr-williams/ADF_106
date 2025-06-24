@@ -1,0 +1,163 @@
+{
+	"name": "Json1",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "dataengineering106",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Json",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"folderPath": "landing_zone",
+				"fileSystem": "api-medallion-project"
+			}
+		},
+		"schema": {
+			"type": "object",
+			"properties": {
+				"collection": {
+					"type": "object",
+					"properties": {
+						"url": {
+							"type": "string"
+						},
+						"count": {
+							"type": "integer"
+						},
+						"pages": {
+							"type": "integer"
+						},
+						"total": {
+							"type": "integer"
+						},
+						"next": {
+							"type": "string"
+						},
+						"prev": {
+							"type": "string"
+						},
+						"first": {
+							"type": "string"
+						},
+						"last": {
+							"type": "string"
+						}
+					}
+				},
+				"data": {
+					"type": "array",
+					"items": {
+						"type": "object",
+						"properties": {
+							"id": {
+								"type": "integer"
+							},
+							"make_model_trim_id": {
+								"type": "integer"
+							},
+							"engine_type": {
+								"type": "string"
+							},
+							"fuel_type": {
+								"type": "string"
+							},
+							"cylinders": {
+								"type": "string"
+							},
+							"size": {
+								"type": "string"
+							},
+							"horsepower_hp": {
+								"type": "integer"
+							},
+							"horsepower_rpm": {
+								"type": "integer"
+							},
+							"torque_ft_lbs": {
+								"type": "integer"
+							},
+							"torque_rpm": {
+								"type": "integer"
+							},
+							"valves": {
+								"type": "integer"
+							},
+							"valve_timing": {
+								"type": "string"
+							},
+							"cam_type": {
+								"type": "string"
+							},
+							"drive_type": {
+								"type": "string"
+							},
+							"transmission": {
+								"type": "string"
+							},
+							"make_model_trim": {
+								"type": "object",
+								"properties": {
+									"id": {
+										"type": "integer"
+									},
+									"make_model_id": {
+										"type": "integer"
+									},
+									"year": {
+										"type": "integer"
+									},
+									"name": {
+										"type": "string"
+									},
+									"description": {
+										"type": "string"
+									},
+									"msrp": {
+										"type": "integer"
+									},
+									"invoice": {
+										"type": "integer"
+									},
+									"created": {
+										"type": "string"
+									},
+									"modified": {
+										"type": "string"
+									},
+									"make_model": {
+										"type": "object",
+										"properties": {
+											"id": {
+												"type": "integer"
+											},
+											"make_id": {
+												"type": "integer"
+											},
+											"name": {
+												"type": "string"
+											},
+											"make": {
+												"type": "object",
+												"properties": {
+													"id": {
+														"type": "integer"
+													},
+													"name": {
+														"type": "string"
+													}
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

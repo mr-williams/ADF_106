@@ -1,0 +1,15 @@
+{
+	"name": "API_autos_medallion",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
+	"properties": {
+		"annotations": [],
+		"type": "RestService",
+		"typeProperties": {
+			"url": "https://car-api2.p.rapidapi.com/api/models",
+			"enableServerCertificateValidation": true,
+			"authenticationType": "Basic",
+			"userName": "sqladminuser",
+			"encryptedCredential": "ew0KICAiVmVyc2lvbiI6ICIyMDE3LTExLTMwIiwNCiAgIlByb3RlY3Rpb25Nb2RlIjogIktleSIsDQogICJTZWNyZXRDb250ZW50VHlwZSI6ICJQbGFpbnRleHQiLA0KICAiQ3JlZGVudGlhbElkIjogIkRBVEFGQUNUT1JZQEFDMUFCMUQ2LTQyNjktNEUwNS05ODNDLUQ3NUQ4QjE1RDdFN184MDY1NjVmMC05MzBlLTQzZDgtOGIwNS03NTUzMTMyZGQxNmUiDQp9"
+		}
+	}
+}
