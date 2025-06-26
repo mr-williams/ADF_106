@@ -1,6 +1,5 @@
 {
 	"name": "API_car_project",
-	"type": "Microsoft.DataFactory/factories/linkedservices",
 	"properties": {
 		"annotations": [],
 		"type": "AzureDatabricks",
@@ -8,11 +7,8 @@
 			"domain": "https://adb-2094138210798001.1.azuredatabricks.net",
 			"authentication": "MSI",
 			"workspaceResourceId": "/subscriptions/1abb6b09-3b6f-4ec0-affa-c232614580ce/resourceGroups/First_group/providers/Microsoft.Databricks/workspaces/First_budget",
-			"newClusterNodeType": "Standard_DS3_v2",
-			"newClusterNumOfWorker": "1",
-			"newClusterVersion": "15.4.x-scala2.12",
-			"clusterOption": "Fixed",
-			"newClusterInitScripts": []
+			"existingClusterId": "0624-084500-rxnpq0pa"
 		}
-	}
+	},
+	"type": "Microsoft.DataFactory/factories/linkedservices"
 }
