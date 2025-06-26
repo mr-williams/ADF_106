@@ -8,6 +8,10 @@
 				"dependsOn": [],
 				"userProperties": [],
 				"typeProperties": {
+					"items": {
+						"value": "@variables('years')",
+						"type": "Expression"
+					},
 					"isSequential": true,
 					"activities": [
 						{
