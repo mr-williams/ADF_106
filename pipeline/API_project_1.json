@@ -5,6 +5,8 @@
 			{
 				"name": "Engines_Architecture",
 				"type": "ForEach",
+				"state": "Inactive",
+				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [],
 				"userProperties": [],
 				"typeProperties": {
@@ -143,6 +145,8 @@
 						{
 							"name": "Silver_Mileages",
 							"type": "DatabricksNotebook",
+							"state": "Inactive",
+							"onInactiveMarkAs": "Succeeded",
 							"dependsOn": [
 								{
 									"activity": "Bronze_Mileages",
