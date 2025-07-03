@@ -3,7 +3,7 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "Mileages_Architecture",
+				"name": "Used_Cars_Architecture",
 				"type": "ForEach",
 				"dependsOn": [],
 				"userProperties": [],
