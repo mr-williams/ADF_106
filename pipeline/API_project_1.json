@@ -12,7 +12,7 @@
 						"value": "@variables('years')",
 						"type": "Expression"
 					},
-					"isSequential": true,
+					"isSequential": false,
 					"activities": [
 						{
 							"name": "API_Mileages",
