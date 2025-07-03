@@ -3,79 +3,6 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "Engines_Architecture",
-				"type": "ForEach",
-				"dependsOn": [],
-				"userProperties": [],
-				"typeProperties": {
-					"items": {
-						"value": "@variables('years')",
-						"type": "Expression"
-					},
-					"isSequential": true,
-					"activities": [
-						{
-							"name": "API_Engines",
-							"type": "DatabricksNotebook",
-							"dependsOn": [],
-							"policy": {
-								"timeout": "0.12:00:00",
-								"retry": 0,
-								"retryIntervalInSeconds": 30,
-								"secureOutput": false,
-								"secureInput": false
-							},
-							"userProperties": [],
-							"typeProperties": {
-								"notebookPath": "/Users/oluwadamilare.williams@outlook.com/API-medallion Project/API to Landing zone"
-							},
-							"linkedServiceName": {
-								"referenceName": "API_car_project",
-								"type": "LinkedServiceReference"
-							}
-						},
-						{
-							"name": "Bronze_Engines",
-							"type": "DatabricksNotebook",
-							"dependsOn": [
-								{
-									"activity": "API_Engines",
-									"dependencyConditions": [
-										"Succeeded"
-									]
-								}
-							],
-							"policy": {
-								"timeout": "0.12:00:00",
-								"retry": 0,
-								"retryIntervalInSeconds": 30,
-								"secureOutput": false,
-								"secureInput": false
-							},
-							"userProperties": [],
-							"typeProperties": {
-								"notebookPath": "/Users/oluwadamilare.williams@outlook.com/API-medallion Project/Bronze_Mileages",
-								"baseParameters": {
-									"section": "engines",
-									"year": {
-										"value": "@string(item())",
-										"type": "Expression"
-									},
-									"filename": {
-										"value": "@concat('engines_',string(item()))",
-										"type": "Expression"
-									}
-								}
-							},
-							"linkedServiceName": {
-								"referenceName": "API_car_project",
-								"type": "LinkedServiceReference"
-							}
-						}
-					]
-				}
-			},
-			{
 				"name": "Mileages_Architecture",
 				"type": "ForEach",
 				"dependsOn": [],
@@ -131,6 +58,64 @@
 								"baseParameters": {
 									"year": {
 										"value": "@string(item())",
+										"type": "Expression"
+									}
+								}
+							},
+							"linkedServiceName": {
+								"referenceName": "API_car_project",
+								"type": "LinkedServiceReference"
+							}
+						},
+						{
+							"name": "API_Engines_copy1",
+							"type": "DatabricksNotebook",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"notebookPath": "/Users/oluwadamilare.williams@outlook.com/API-medallion Project/API to Landing zone"
+							},
+							"linkedServiceName": {
+								"referenceName": "API_car_project",
+								"type": "LinkedServiceReference"
+							}
+						},
+						{
+							"name": "Bronze_Engines_copy1",
+							"type": "DatabricksNotebook",
+							"dependsOn": [
+								{
+									"activity": "API_Engines_copy1",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"notebookPath": "/Users/oluwadamilare.williams@outlook.com/API-medallion Project/Bronze_Mileages",
+								"baseParameters": {
+									"section": "engines",
+									"year": {
+										"value": "@string(item())",
+										"type": "Expression"
+									},
+									"filename": {
+										"value": "@concat('engines_',string(item()))",
 										"type": "Expression"
 									}
 								}
