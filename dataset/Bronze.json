@@ -1,5 +1,5 @@
 {
-	"name": "Landing_Zone",
+	"name": "Bronze",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "dataengineering106",
@@ -240,6 +240,5 @@
 				}
 			}
 		}
-	},
-	"type": "Microsoft.DataFactory/factories/datasets"
+	}
 }
