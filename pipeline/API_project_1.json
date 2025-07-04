@@ -138,10 +138,6 @@
 									"year": {
 										"value": "@string(item())",
 										"type": "Expression"
-									},
-									"filename": {
-										"value": "@concat('engines_',string(item()))",
-										"type": "Expression"
 									}
 								}
 							},
