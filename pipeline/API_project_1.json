@@ -29,11 +29,12 @@
 							"typeProperties": {
 								"notebookPath": "/Users/oluwadamilare.williams@outlook.com/API-medallion Project/API to Landing zone",
 								"baseParameters": {
-									"section": "mileages",
 									"filename": {
 										"value": "@concat('mileages_',string(item()))",
 										"type": "Expression"
-									}
+									},
+									"section": "mileages",
+									"year": "@string(item())"
 								}
 							},
 							"linkedServiceName": {
@@ -92,6 +93,10 @@
 									"section": "engines",
 									"filename": {
 										"value": "@concat('engines_',string(item()))",
+										"type": "Expression"
+									},
+									"year": {
+										"value": "@string(item())",
 										"type": "Expression"
 									}
 								}
