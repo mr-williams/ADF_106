@@ -133,13 +133,16 @@
 							},
 							"userProperties": [],
 							"typeProperties": {
-								"notebookPath": "/Users/oluwadamilare.williams@outlook.com/API-medallion Project/Bronze_Mileages",
+								"notebookPath": "/Users/oluwadamilare.williams@outlook.com/API-medallion Project/Bronze_Engines",
 								"baseParameters": {
 									"year": {
 										"value": "@string(item())",
 										"type": "Expression"
 									},
-									"filename": "@concat('engines_',string(item()))"
+									"filename": {
+										"value": "@concat('engines_',string(item()))",
+										"type": "Expression"
+									}
 								}
 							},
 							"linkedServiceName": {
