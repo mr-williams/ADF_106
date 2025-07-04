@@ -1,0 +1,750 @@
+{
+	"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"type": "string",
+			"metadata": "Data Factory name",
+			"defaultValue": "learningfactory106"
+		},
+		"API_autos_medallion_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'API_autos_medallion'"
+		},
+		"dataengineering106_accountKey": {
+			"type": "secureString",
+			"metadata": "Secure string for 'accountKey' of 'dataengineering106'"
+		},
+		"API_autos_medallion_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://car-api2.p.rapidapi.com/api/models"
+		},
+		"API_autos_medallion_properties_typeProperties_userName": {
+			"type": "string",
+			"defaultValue": "sqladminuser"
+		},
+		"API_car_project_properties_typeProperties_existingClusterId": {
+			"type": "string",
+			"defaultValue": "0624-084500-rxnpq0pa"
+		},
+		"dataengineering106_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://dataengineering106.dfs.core.windows.net/"
+		}
+	},
+	"variables": {
+		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+	},
+	"resources": [
+		{
+			"name": "[concat(parameters('factoryName'), '/API_project_1')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Used_Cars_Architecture",
+						"type": "ForEach",
+						"dependsOn": [],
+						"userProperties": [],
+						"typeProperties": {
+							"items": {
+								"value": "@variables('years')",
+								"type": "Expression"
+							},
+							"isSequential": false,
+							"activities": [
+								{
+									"name": "API_Mileages",
+									"type": "DatabricksNotebook",
+									"dependsOn": [],
+									"policy": {
+										"timeout": "0.12:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"notebookPath": "/Users/oluwadamilare.williams@outlook.com/API-medallion Project/API to Landing zone"
+									},
+									"linkedServiceName": {
+										"referenceName": "API_car_project",
+										"type": "LinkedServiceReference"
+									}
+								},
+								{
+									"name": "Bronze_Mileages",
+									"type": "DatabricksNotebook",
+									"dependsOn": [
+										{
+											"activity": "API_Mileages",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										}
+									],
+									"policy": {
+										"timeout": "0.12:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"notebookPath": "/Users/oluwadamilare.williams@outlook.com/API-medallion Project/Bronze_Mileages",
+										"baseParameters": {
+											"year": {
+												"value": "@string(item())",
+												"type": "Expression"
+											}
+										}
+									},
+									"linkedServiceName": {
+										"referenceName": "API_car_project",
+										"type": "LinkedServiceReference"
+									}
+								},
+								{
+									"name": "API_Engines_copy1",
+									"type": "DatabricksNotebook",
+									"dependsOn": [],
+									"policy": {
+										"timeout": "0.12:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"notebookPath": "/Users/oluwadamilare.williams@outlook.com/API-medallion Project/API to Landing zone"
+									},
+									"linkedServiceName": {
+										"referenceName": "API_car_project",
+										"type": "LinkedServiceReference"
+									}
+								},
+								{
+									"name": "Bronze_Engines_copy1",
+									"type": "DatabricksNotebook",
+									"dependsOn": [
+										{
+											"activity": "API_Engines_copy1",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										}
+									],
+									"policy": {
+										"timeout": "0.12:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"notebookPath": "/Users/oluwadamilare.williams@outlook.com/API-medallion Project/Bronze_Mileages",
+										"baseParameters": {
+											"section": "engines",
+											"year": {
+												"value": "@string(item())",
+												"type": "Expression"
+											},
+											"filename": {
+												"value": "@concat('engines_',string(item()))",
+												"type": "Expression"
+											}
+										}
+									},
+									"linkedServiceName": {
+										"referenceName": "API_car_project",
+										"type": "LinkedServiceReference"
+									}
+								}
+							]
+						}
+					}
+				],
+				"concurrency": 1,
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"variables": {
+					"years": {
+						"type": "Array",
+						"defaultValue": [
+							2015,
+							2016,
+							2017,
+							2018,
+							2019
+						]
+					},
+					"debug years": {
+						"type": "Array"
+					}
+				},
+				"annotations": [],
+				"lastPublishTime": "2025-05-19T18:00:00Z"
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/API_car_project')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Bronze')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "dataengineering106",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "Json",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"folderPath": "bronze",
+						"fileSystem": "api-medallion-project"
+					}
+				},
+				"schema": {
+					"type": "object",
+					"properties": {
+						"commitInfo": {
+							"type": "object",
+							"properties": {
+								"timestamp": {
+									"type": "integer"
+								},
+								"userId": {
+									"type": "string"
+								},
+								"userName": {
+									"type": "string"
+								},
+								"operation": {
+									"type": "string"
+								},
+								"operationParameters": {
+									"type": "object",
+									"properties": {
+										"mode": {
+											"type": "string"
+										},
+										"statsOnLoad": {
+											"type": "boolean"
+										},
+										"partitionBy": {
+											"type": "string"
+										}
+									}
+								},
+								"notebook": {
+									"type": "object",
+									"properties": {
+										"notebookId": {
+											"type": "string"
+										}
+									}
+								},
+								"clusterId": {
+									"type": "string"
+								},
+								"isolationLevel": {
+									"type": "string"
+								},
+								"isBlindAppend": {
+									"type": "boolean"
+								},
+								"operationMetrics": {
+									"type": "object",
+									"properties": {
+										"numFiles": {
+											"type": "string"
+										},
+										"numOutputRows": {
+											"type": "string"
+										},
+										"numOutputBytes": {
+											"type": "string"
+										}
+									}
+								},
+								"tags": {
+									"type": "object",
+									"properties": {
+										"noRowsCopied": {
+											"type": "string"
+										},
+										"restoresDeletedRows": {
+											"type": "string"
+										}
+									}
+								},
+								"engineInfo": {
+									"type": "string"
+								},
+								"txnId": {
+									"type": "string"
+								},
+								"readVersion": {
+									"type": "integer"
+								}
+							}
+						},
+						"metaData": {
+							"type": "object",
+							"properties": {
+								"id": {
+									"type": "string"
+								},
+								"format": {
+									"type": "object",
+									"properties": {
+										"provider": {
+											"type": "string"
+										},
+										"options": {
+											"type": "object"
+										}
+									}
+								},
+								"schemaString": {
+									"type": "string"
+								},
+								"partitionColumns": {
+									"type": "array"
+								},
+								"configuration": {
+									"type": "object",
+									"properties": {
+										"delta.enableDeletionVectors": {
+											"type": "string"
+										}
+									}
+								},
+								"createdTime": {
+									"type": "integer"
+								}
+							}
+						},
+						"protocol": {
+							"type": "object",
+							"properties": {
+								"minReaderVersion": {
+									"type": "integer"
+								},
+								"minWriterVersion": {
+									"type": "integer"
+								},
+								"readerFeatures": {
+									"type": "array",
+									"items": {
+										"type": "string"
+									}
+								},
+								"writerFeatures": {
+									"type": "array",
+									"items": {
+										"type": "string"
+									}
+								}
+							}
+						},
+						"add": {
+							"type": "object",
+							"properties": {
+								"path": {
+									"type": "string"
+								},
+								"partitionValues": {
+									"type": "object"
+								},
+								"size": {
+									"type": "integer"
+								},
+								"modificationTime": {
+									"type": "integer"
+								},
+								"dataChange": {
+									"type": "boolean"
+								},
+								"stats": {
+									"type": "string"
+								},
+								"tags": {
+									"type": "object",
+									"properties": {
+										"INSERTION_TIME": {
+											"type": "string"
+										},
+										"MIN_INSERTION_TIME": {
+											"type": "string"
+										},
+										"MAX_INSERTION_TIME": {
+											"type": "string"
+										},
+										"OPTIMIZE_TARGET_SIZE": {
+											"type": "string"
+										}
+									}
+								}
+							}
+						},
+						"remove": {
+							"type": "object",
+							"properties": {
+								"path": {
+									"type": "string"
+								},
+								"deletionTimestamp": {
+									"type": "integer"
+								},
+								"dataChange": {
+									"type": "boolean"
+								},
+								"extendedFileMetadata": {
+									"type": "boolean"
+								},
+								"partitionValues": {
+									"type": "object"
+								},
+								"size": {
+									"type": "integer"
+								},
+								"tags": {
+									"type": "object",
+									"properties": {
+										"INSERTION_TIME": {
+											"type": "string"
+										},
+										"MIN_INSERTION_TIME": {
+											"type": "string"
+										},
+										"MAX_INSERTION_TIME": {
+											"type": "string"
+										},
+										"OPTIMIZE_TARGET_SIZE": {
+											"type": "string"
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/dataengineering106')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Landing_Zone')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "dataengineering106",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "Json",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"folderPath": "bronze",
+						"fileSystem": "api-medallion-project"
+					}
+				},
+				"schema": {
+					"type": "object",
+					"properties": {
+						"commitInfo": {
+							"type": "object",
+							"properties": {
+								"timestamp": {
+									"type": "integer"
+								},
+								"userId": {
+									"type": "string"
+								},
+								"userName": {
+									"type": "string"
+								},
+								"operation": {
+									"type": "string"
+								},
+								"operationParameters": {
+									"type": "object",
+									"properties": {
+										"mode": {
+											"type": "string"
+										},
+										"statsOnLoad": {
+											"type": "boolean"
+										},
+										"partitionBy": {
+											"type": "string"
+										}
+									}
+								},
+								"notebook": {
+									"type": "object",
+									"properties": {
+										"notebookId": {
+											"type": "string"
+										}
+									}
+								},
+								"clusterId": {
+									"type": "string"
+								},
+								"isolationLevel": {
+									"type": "string"
+								},
+								"isBlindAppend": {
+									"type": "boolean"
+								},
+								"operationMetrics": {
+									"type": "object",
+									"properties": {
+										"numFiles": {
+											"type": "string"
+										},
+										"numOutputRows": {
+											"type": "string"
+										},
+										"numOutputBytes": {
+											"type": "string"
+										}
+									}
+								},
+								"tags": {
+									"type": "object",
+									"properties": {
+										"noRowsCopied": {
+											"type": "string"
+										},
+										"restoresDeletedRows": {
+											"type": "string"
+										}
+									}
+								},
+								"engineInfo": {
+									"type": "string"
+								},
+								"txnId": {
+									"type": "string"
+								},
+								"readVersion": {
+									"type": "integer"
+								}
+							}
+						},
+						"metaData": {
+							"type": "object",
+							"properties": {
+								"id": {
+									"type": "string"
+								},
+								"format": {
+									"type": "object",
+									"properties": {
+										"provider": {
+											"type": "string"
+										},
+										"options": {
+											"type": "object"
+										}
+									}
+								},
+								"schemaString": {
+									"type": "string"
+								},
+								"partitionColumns": {
+									"type": "array"
+								},
+								"configuration": {
+									"type": "object",
+									"properties": {
+										"delta.enableDeletionVectors": {
+											"type": "string"
+										}
+									}
+								},
+								"createdTime": {
+									"type": "integer"
+								}
+							}
+						},
+						"protocol": {
+							"type": "object",
+							"properties": {
+								"minReaderVersion": {
+									"type": "integer"
+								},
+								"minWriterVersion": {
+									"type": "integer"
+								},
+								"readerFeatures": {
+									"type": "array",
+									"items": {
+										"type": "string"
+									}
+								},
+								"writerFeatures": {
+									"type": "array",
+									"items": {
+										"type": "string"
+									}
+								}
+							}
+						},
+						"add": {
+							"type": "object",
+							"properties": {
+								"path": {
+									"type": "string"
+								},
+								"partitionValues": {
+									"type": "object"
+								},
+								"size": {
+									"type": "integer"
+								},
+								"modificationTime": {
+									"type": "integer"
+								},
+								"dataChange": {
+									"type": "boolean"
+								},
+								"stats": {
+									"type": "string"
+								},
+								"tags": {
+									"type": "object",
+									"properties": {
+										"INSERTION_TIME": {
+											"type": "string"
+										},
+										"MIN_INSERTION_TIME": {
+											"type": "string"
+										},
+										"MAX_INSERTION_TIME": {
+											"type": "string"
+										},
+										"OPTIMIZE_TARGET_SIZE": {
+											"type": "string"
+										}
+									}
+								}
+							}
+						},
+						"remove": {
+							"type": "object",
+							"properties": {
+								"path": {
+									"type": "string"
+								},
+								"deletionTimestamp": {
+									"type": "integer"
+								},
+								"dataChange": {
+									"type": "boolean"
+								},
+								"extendedFileMetadata": {
+									"type": "boolean"
+								},
+								"partitionValues": {
+									"type": "object"
+								},
+								"size": {
+									"type": "integer"
+								},
+								"tags": {
+									"type": "object",
+									"properties": {
+										"INSERTION_TIME": {
+											"type": "string"
+										},
+										"MIN_INSERTION_TIME": {
+											"type": "string"
+										},
+										"MAX_INSERTION_TIME": {
+											"type": "string"
+										},
+										"OPTIMIZE_TARGET_SIZE": {
+											"type": "string"
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/dataengineering106')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/API_autos_medallion')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "RestService",
+				"typeProperties": {
+					"url": "[parameters('API_autos_medallion_properties_typeProperties_url')]",
+					"enableServerCertificateValidation": true,
+					"authenticationType": "Basic",
+					"userName": "[parameters('API_autos_medallion_properties_typeProperties_userName')]",
+					"password": {
+						"type": "SecureString",
+						"value": "[parameters('API_autos_medallion_password')]"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/API_car_project')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureDatabricks",
+				"typeProperties": {
+					"domain": "https://adb-2094138210798001.1.azuredatabricks.net",
+					"authentication": "MSI",
+					"workspaceResourceId": "/subscriptions/1abb6b09-3b6f-4ec0-affa-c232614580ce/resourceGroups/First_group/providers/Microsoft.Databricks/workspaces/First_budget",
+					"existingClusterId": "[parameters('API_car_project_properties_typeProperties_existingClusterId')]"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/dataengineering106')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureBlobFS",
+				"typeProperties": {
+					"url": "[parameters('dataengineering106_properties_typeProperties_url')]",
+					"accountKey": {
+						"type": "SecureString",
+						"value": "[parameters('dataengineering106_accountKey')]"
+					}
+				}
+			},
+			"dependsOn": []
+		}
+	]
+}

@@ -1,0 +1,33 @@
+{
+	"$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"value": "learningfactory106"
+		},
+		"API_autos_medallion_password": {
+			"value": ""
+		},
+		"dataengineering106_accountKey": {
+			"value": ""
+		},
+		"API_autos_medallion_properties_typeProperties_url": {
+			"value": "https://car-api2.p.rapidapi.com/api/models"
+		},
+		"API_autos_medallion_properties_typeProperties_userName": {
+			"value": "sqladminuser"
+		},
+		"API_car_project_properties_typeProperties_existingClusterId": {
+			"value": "0624-084500-rxnpq0pa"
+		},
+		"dataengineering106_properties_typeProperties_url": {
+			"value": "https://dataengineering106.dfs.core.windows.net/"
+		},
+		"containerUri": {
+			"value": ""
+		},
+		"containerSasToken": {
+			"value": ""
+		}
+	}
+}
