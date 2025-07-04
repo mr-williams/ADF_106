@@ -123,10 +123,6 @@
 										"notebookPath": "/Users/oluwadamilare.williams@outlook.com/API-medallion Project/API to Landing zone",
 										"baseParameters": {
 											"section": "mileages",
-											"year": {
-												"value": "@string(item())",
-												"type": "Expression"
-											},
 											"filename": {
 												"value": "@concat('mileages_',string(item()))",
 												"type": "Expression"
@@ -187,10 +183,6 @@
 										"notebookPath": "/Users/oluwadamilare.williams@outlook.com/API-medallion Project/API to Landing zone",
 										"baseParameters": {
 											"section": "engines",
-											"year": {
-												"value": "@string(item())",
-												"type": "Expression"
-											},
 											"filename": {
 												"value": "@concat('engines_',string(item()))",
 												"type": "Expression"
