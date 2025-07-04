@@ -29,6 +29,13 @@
 							"typeProperties": {
 								"notebookPath": "/Users/oluwadamilare.williams@outlook.com/API-medallion Project/API to Landing zone",
 								"baseParameters": {
+
+									"section": "mileages",
+									"year": {
+										"value": "@string(item())",
+										"type": "Expression"
+									},
+
 									"filename": {
 										"value": "@concat('mileages_',string(item()))",
 										"type": "Expression"
@@ -67,7 +74,8 @@
 									"year": {
 										"value": "@string(item())",
 										"type": "Expression"
-									}
+									},
+									"filename": "mileages"
 								}
 							},
 							"linkedServiceName": {
@@ -126,13 +134,17 @@
 							},
 							"userProperties": [],
 							"typeProperties": {
-								"notebookPath": "/Users/oluwadamilare.williams@outlook.com/API-medallion Project/Bronze_Mileages",
+								"notebookPath": "/Users/oluwadamilare.williams@outlook.com/API-medallion Project/Bronze_Engines",
 								"baseParameters": {
 									"year": {
 										"value": "@string(item())",
 										"type": "Expression"
 									},
+
+									"filename": "engines"
+
 									"filename": "@concat('engines_',string(item()))"
+
 								}
 							},
 							"linkedServiceName": {
