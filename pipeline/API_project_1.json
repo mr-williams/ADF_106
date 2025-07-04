@@ -131,7 +131,8 @@
 									"year": {
 										"value": "@string(item())",
 										"type": "Expression"
-									}
+									},
+									"filename": "@concat('engines_',string(item()))"
 								}
 							},
 							"linkedServiceName": {
