@@ -67,7 +67,18 @@
 									},
 									"userProperties": [],
 									"typeProperties": {
-										"notebookPath": "/Users/oluwadamilare.williams@outlook.com/API-medallion Project/API to Landing zone"
+										"notebookPath": "/Users/oluwadamilare.williams@outlook.com/API-medallion Project/API to Landing zone",
+										"baseParameters": {
+											"section": "mileages",
+											"year": {
+												"value": "@string(item())",
+												"type": "Expression"
+											},
+											"filename": {
+												"value": "@concat('mileages_',string(item()))",
+												"type": "Expression"
+											}
+										}
 									},
 									"linkedServiceName": {
 										"referenceName": "API_car_project",
@@ -108,7 +119,7 @@
 									}
 								},
 								{
-									"name": "API_Engines_copy1",
+									"name": "API_Engines",
 									"type": "DatabricksNotebook",
 									"dependsOn": [],
 									"policy": {
@@ -120,7 +131,18 @@
 									},
 									"userProperties": [],
 									"typeProperties": {
-										"notebookPath": "/Users/oluwadamilare.williams@outlook.com/API-medallion Project/API to Landing zone"
+										"notebookPath": "/Users/oluwadamilare.williams@outlook.com/API-medallion Project/API to Landing zone",
+										"baseParameters": {
+											"section": "engines",
+											"year": {
+												"value": "@string(item())",
+												"type": "Expression"
+											},
+											"filename": {
+												"value": "@concat('engines_',string(item()))",
+												"type": "Expression"
+											}
+										}
 									},
 									"linkedServiceName": {
 										"referenceName": "API_car_project",
@@ -128,11 +150,11 @@
 									}
 								},
 								{
-									"name": "Bronze_Engines_copy1",
+									"name": "Bronze_Engines",
 									"type": "DatabricksNotebook",
 									"dependsOn": [
 										{
-											"activity": "API_Engines_copy1",
+											"activity": "API_Engines",
 											"dependencyConditions": [
 												"Succeeded"
 											]
@@ -149,13 +171,8 @@
 									"typeProperties": {
 										"notebookPath": "/Users/oluwadamilare.williams@outlook.com/API-medallion Project/Bronze_Mileages",
 										"baseParameters": {
-											"section": "engines",
 											"year": {
 												"value": "@string(item())",
-												"type": "Expression"
-											},
-											"filename": {
-												"value": "@concat('engines_',string(item()))",
 												"type": "Expression"
 											}
 										}
