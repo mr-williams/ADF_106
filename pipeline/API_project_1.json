@@ -76,7 +76,7 @@
 							}
 						},
 						{
-							"name": "API_Engines_copy1",
+							"name": "API_Engines",
 							"type": "DatabricksNotebook",
 							"dependsOn": [],
 							"policy": {
@@ -107,11 +107,11 @@
 							}
 						},
 						{
-							"name": "Bronze_Engines_copy1",
+							"name": "Bronze_Engines",
 							"type": "DatabricksNotebook",
 							"dependsOn": [
 								{
-									"activity": "API_Engines_copy1",
+									"activity": "API_Engines",
 									"dependencyConditions": [
 										"Succeeded"
 									]
