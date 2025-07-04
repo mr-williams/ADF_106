@@ -154,9 +154,6 @@
 					2018,
 					2019
 				]
-			},
-			"debug years": {
-				"type": "Array"
 			}
 		},
 		"annotations": [],
