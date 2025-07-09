@@ -122,12 +122,15 @@
 									"typeProperties": {
 										"notebookPath": "/Users/oluwadamilare.williams@outlook.com/API-medallion Project/API to Landing zone",
 										"baseParameters": {
+											"section": "mileages",
+											"year": {
+												"value": "@string(item())",
+												"type": "Expression"
+											},
 											"filename": {
 												"value": "@concat('mileages_',string(item()))",
 												"type": "Expression"
-											},
-											"section": "mileages",
-											"year": "@string(item())"
+											}
 										}
 									},
 									"linkedServiceName": {
@@ -160,7 +163,8 @@
 											"year": {
 												"value": "@string(item())",
 												"type": "Expression"
-											}
+											},
+											"filename": "mileages"
 										}
 									},
 									"linkedServiceName": {
@@ -219,12 +223,73 @@
 									},
 									"userProperties": [],
 									"typeProperties": {
-										"notebookPath": "/Users/oluwadamilare.williams@outlook.com/API-medallion Project/Bronze_Mileages",
+										"notebookPath": "/Users/oluwadamilare.williams@outlook.com/API-medallion Project/Bronze_Engines",
 										"baseParameters": {
 											"year": {
 												"value": "@string(item())",
 												"type": "Expression"
-											}
+											},
+											"filename": "engines"
+										}
+									},
+									"linkedServiceName": {
+										"referenceName": "API_car_project",
+										"type": "LinkedServiceReference"
+									}
+								},
+								{
+									"name": "Silver_Mileages",
+									"type": "DatabricksNotebook",
+									"dependsOn": [
+										{
+											"activity": "Bronze_Mileages",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										}
+									],
+									"policy": {
+										"timeout": "0.12:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"notebookPath": "/Users/oluwadamilare.williams@outlook.com/API-medallion Project/Silver_Mileages",
+										"baseParameters": {
+											"year": "@string(item())"
+										}
+									},
+									"linkedServiceName": {
+										"referenceName": "API_car_project",
+										"type": "LinkedServiceReference"
+									}
+								},
+								{
+									"name": "Silver_Engines",
+									"type": "DatabricksNotebook",
+									"dependsOn": [
+										{
+											"activity": "Bronze_Engines",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										}
+									],
+									"policy": {
+										"timeout": "0.12:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"notebookPath": "/Users/oluwadamilare.williams@outlook.com/API-medallion Project/Silver_Engines",
+										"baseParameters": {
+											"year": "@string(item())"
 										}
 									},
 									"linkedServiceName": {
