@@ -41,7 +41,7 @@
 								}
 							},
 							"linkedServiceName": {
-								"referenceName": "API_car_project",
+								"referenceName": "Job_cluster 1",
 								"type": "LinkedServiceReference"
 							}
 						},
@@ -75,7 +75,7 @@
 								}
 							},
 							"linkedServiceName": {
-								"referenceName": "API_car_project",
+								"referenceName": "Job_cluster 1",
 								"type": "LinkedServiceReference"
 							}
 						},
@@ -106,7 +106,7 @@
 								}
 							},
 							"linkedServiceName": {
-								"referenceName": "API_car_project",
+								"referenceName": "Job_cluster 1",
 								"type": "LinkedServiceReference"
 							}
 						},
@@ -140,7 +140,7 @@
 								}
 							},
 							"linkedServiceName": {
-								"referenceName": "API_car_project",
+								"referenceName": "Job_cluster 1",
 								"type": "LinkedServiceReference"
 							}
 						},
@@ -166,11 +166,14 @@
 							"typeProperties": {
 								"notebookPath": "/Users/oluwadamilare.williams@outlook.com/API-medallion Project/Silver_Mileages",
 								"baseParameters": {
-									"year": "@string(item())"
+									"year": {
+										"value": "@string(item())",
+										"type": "Expression"
+									}
 								}
 							},
 							"linkedServiceName": {
-								"referenceName": "API_car_project",
+								"referenceName": "Job_cluster 1",
 								"type": "LinkedServiceReference"
 							}
 						},
@@ -196,11 +199,14 @@
 							"typeProperties": {
 								"notebookPath": "/Users/oluwadamilare.williams@outlook.com/API-medallion Project/Silver_Engines",
 								"baseParameters": {
-									"year": "@string(item())"
+									"year": {
+										"value": "@string(item())",
+										"type": "Expression"
+									}
 								}
 							},
 							"linkedServiceName": {
-								"referenceName": "API_car_project",
+								"referenceName": "Job_cluster 1",
 								"type": "LinkedServiceReference"
 							}
 						}
